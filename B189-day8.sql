@@ -119,9 +119,8 @@ SELECT * FROM personeller;
 
 SELECT p.isim AS personel, m.isim AS yonetici
 FROM personeller AS p
-INNER JOIN yonetici AS m
-ON pyonetici_id=m.id
-
+INNER JOIN personeller AS m
+ON p.yonetici_id=m.id
 
 
 
@@ -150,3 +149,207 @@ INSERT INTO words VALUES (1010, 'yaf', 5);
 INSERT INTO words VALUES (1011, 'ahata', 3);
 
 SELECT * FROM words;
+
+SELECT * FROM developers WHERE name='Enes Can';-- bildigimiz bir kaydi gostermek icin bu kodu yazariz.
+
+--wildcard(tr.de joker anlami tasir. Sembolu;% dir.)-->0 veya daha fazla karater anlamina gelir.
+
+
+--SORU
+--developers tablosunda ismi E ile baslayanlari listeleyelim.
+
+SELECT *
+FROM developers
+WHERE name LIKE 'E%'
+--birebir degeri hatirlayamadigimizda mesela Enes i hatirliyor ama soyadini bilmedigimizde LIKE komutunu kullaniriz.
+--birebir degeri hatirlayamadigimizda mesela Enes i hatirliyor ama soyadini bilmedigimizde LIKE komutunu kullaniriz.
+
+--SORU
+--developers tablosunda ismi E ile baslayanlari listeleyelim.(burada bas harfinin buyuk/kucuk hangi harfle basladigini bilmedigimiz durumda)
+
+SELECT *
+FROM developers
+WHERE name ILIKE 'e%'
+
+
+--SORU
+--a harfi ile biten sehirde calisan dev isimlerini be sehirlerini yazdiran QUERY yazin
+
+SELECT name,city
+FROM developers
+WHERE city ILIKE '%a'
+
+
+--SORU
+--Ismi T ile başlayıp n harfi ile biten dev isimlerini ve maaşlarını yazdiran QUERY yazin
+
+SELECT name,salary
+FROM developers
+WHERE name ILIKE 't%n'
+
+
+
+--SORU
+--Ismi içinde 'an' olan dev isimlerini ve maaşlarını yazdiran QUERY yazin
+
+SELECT name,salary
+FROM developers
+WHERE name ILIKE '%an%'
+
+
+--SORU
+--Ismi içinde e ve a harfi olan dev isimlerini yazdiran QUERY yazin
+--1nci yol
+SELECT *
+FROM developers
+WHERE name ILIKE '%e%a%' OR name ILIKE '%a%e%'
+
+--2nci yol
+SELECT *
+FROM developers
+WHERE name ILIKE '%e%' AND name ILIKE '%a%'
+
+
+
+--underscore(_); bilinmeyen bir tane karekteri temsil eder.
+
+
+--SORU
+--Isminin ikinci harfi u olan devlerin tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM developers
+WHERE name ILIKE '_u%'
+
+
+--SORU
+--Kullandigi prog dili 4 harfli ve ucuncu harfi v olan devlerin tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM developers
+WHERE prog_lang ILIKE '__v_'
+
+
+
+--Kullandığı prog. dili en az 5 harfli ve ilk harfi J olan devlerin tum bilgilerini yazdiran QUERY yazin.ÖDEVVV
+--HINT:sadece JavaScript olacak
+--Isminin 2. harfi e,4. harfi i olan devlerin tum bilgilerini yazdiran QUERY yazin. ÖDEVV
+--ismi boşluk içeren devlerin tum bilgilerini yazdiran QUERY yazin:ÖDEVVVV
+
+
+
+--37--REGEXP_LIKE(~); belirli bir karakter deseninin iceren datalari regex 
+--kullanarak filtrelememizi saglar.
+
+--
+
+
+--words tablosu uzerinden calisalim
+
+
+--SORU
+--h harfinden sonra a veya i harfini sonra ise t harfini
+--iceren kelimerin tum bilgilerin iyazdiran QUERY kodunu yaziniz
+
+--bu soruda ==>[] sembolu kullanilir. Bu sembolun icerisindeki harflerden en az birini temsil eder.
+--bu kod kucuk buyuk harfe karsi duyarlidir
+SELECT *
+FROM words
+WHERE word ~'h[ai]t'
+
+
+--bu kod ise kucuk buyuk harfe karsi duyarli degildir
+SELECT *
+FROM words
+WHERE word ~*'h[ai]t'
+
+
+
+--SORU
+--h harfinden sonra, a ile k arasindaki harflerden birini, sonra da t harfini
+-- içeren kelimelerin tum bilgilerini  yazdiran QUERY yaziniz.
+
+SELECT *
+FROM words
+WHERE word ~* 'h[a-k]t'
+
+
+
+--SORU
+-- Icinde m veya i olan kelimelerin tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* '[mi]' 
+
+
+--SORU
+--  a ile baslayan kelimelerin tum  bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* '^a' 
+
+
+
+--SORU
+--  a veya s ile baslayan kelimelerin tum  bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* '^[as]' 
+
+
+--SORU
+--  m ile biten kelimelerin tum  bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* 'm$' 
+
+
+
+--SORU
+--  m ile baslayip f ile biten kelimelerin tum  bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* '^y(.*)f$' -- (.*) ifadesi y ve f arasinda birden fazla karakter yada hic karakter bulunup bulunmadigini ifade eder.
+
+
+--SORU
+--y ile başlayıp f ile biten 3 harfli kelimelerin tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words
+WHERE word ~* '^y.f$'
+
+
+
+
+
+--SORU
+-- ilk harfi h veya H olmayan kelimelerin  tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words 
+WHERE word NOT ILIKE 'h%'
+
+
+
+
+--SORU
+-- ilk harfi h veya H olmayan kelimelerin  tum bilgilerini yazdiran QUERY yazin
+
+SELECT *
+FROM words 
+WHERE word !~* '^h'
+
+
+
+--2. harfi e,i veya o olmayan kelimelerin tum bilgilerini yazdiran QUERY yazin.ÖDEV
+
+
+
+
+
