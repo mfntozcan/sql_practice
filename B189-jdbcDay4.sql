@@ -1,0 +1,1 @@
+select count(*) from countries where region_id>1
